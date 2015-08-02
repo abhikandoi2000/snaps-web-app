@@ -65,6 +65,32 @@ class Photo:
       db.rollback()
       raise e
 
+  def like(self, data, db, cursor):
+    sql = "INSERT INTO likes(photo_id, user_id, created_at) \
+           VALUES ('%d', '%d', '%d')" % \
+           (self.data['id'], data['user_id'], data['created_at'])
+
+    try:
+      cursor.execute(sql)
+
+      db.commit() # commit changes
+    except Exception, e:
+      db.rollback()
+      raise e
+
+  def unlike(self, user_id, db, cursor):
+    sql = "DELETE FROM likes \
+           WHERE photo_id = '%d' AND user_id = '%d'" % \
+           (self.data['id'], user_id)
+
+    try:
+      cursor.execute(sql)
+
+      db.commit() # commit changes
+    except Exception, e:
+      db.rollback()
+      raise e
+
   def load_from_tuple(self, data):
     self.data['id'] = data[0]
     self.data['fb_id'] = data[1]
