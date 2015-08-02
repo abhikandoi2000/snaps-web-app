@@ -6,6 +6,7 @@ import MySQLdb
 from snaps.models.user import User
 from snaps.models.photo import Photo
 from snaps.models.photolist import PhotoList
+from snaps.services.photoservice import PhotoService
 
 app = Flask(__name__)
 
@@ -17,6 +18,11 @@ cursor = db.cursor()
 
 @app.route('/', methods=['GET'])
 def homepage_display():
+  photo_service = PhotoService()
+  # photo_service.insert_into_db({"fb_id": "66666666", "filename": "66666666.jpg", ""}, db, cursor)
+  # photo_service.change_state(2, 'launched', db, cursor)
+  # photo_service.toggle_like(2, 6, "aNJKJHsdakdaNAKsdhkJHdanashdLDSnlja=", db, cursor)
+
   # photo = Photo()
   # photo.load_from_db(3, cursor)
   # photo.create(("3333333", "3333333.png", "Did this and that but never all at once!", 3, "unreviewed", 33333333), db, cursor)
