@@ -29,18 +29,20 @@ class Photo:
       raise e
 
   def create(self, data, db, cursor):
-    sql = "INSERT INTO photos(id, fb_id, filename, caption, \
+    sql = "INSERT INTO photos(fb_id, filename, caption, \
            owner_id, state, created_at) \
-           VALUES ('%d', '%s', '%s', '%s', '%d', '%s', '%d')" % \
+           VALUES ('%s', '%s', '%s', '%d', '%s', '%d')" % \
            (data[0], data[1], data[2], data[3], data[4], \
-            data[5], data[6])
+            data[5])
 
     try:
       cursor.execute(sql)
 
       db.commit() # commit changes
 
-      self.load_from_tuple(data)
+      id = cursor.lastrowid
+
+      self.load_from_tuple((id,) + data)
     except Exception, e:
       db.rollback()
       raise e
