@@ -1,4 +1,5 @@
 import time
+from os import path
 
 from ..models.photo import Photo
 from ..models.photolist import PhotoList
@@ -37,11 +38,11 @@ class PhotoService:
       if photo.check_like(user_id, db, cursor):
         photo.unlike(user_id, db, cursor)
 
-        return {"action_performed": "unliked", "action_status": True}
+        return {"action_performed": "photo.unlike", "action_status": True}
       else:
         photo.like({"user_id": user_id, "created_at": int(time.time())}, db, cursor)
 
-        return {"action_performed": "liked", "action_status": True}
+        return {"action_performed": "photo.like", "action_status": True}
     except Exception, e:
       raise e
 
@@ -72,4 +73,24 @@ class PhotoService:
     except Exception, e:
       raise e
 
+  def upload(self, photo, filename, user_id, caption, access_token, db, cursor):
+    user = User()
+    user.load_from_db(user_id, cursor)
 
+    if not user.verify_creds(access_token, cursor, db):
+      return {"error": {"message": "Authencitity of the user failed"}, "action_status": False}
+
+    photo.save(path.join("/home/abhi/projects/sdslabs/snaps-web-app/static/original", filename))
+
+    try:
+      self.insert_into_db(
+        {
+          "fb_id": None,
+          "filename": filename,
+          "caption": caption,
+          "owner_id": user_id
+        }, db, cursor)
+
+      return {"action_performed": "photo.upload", "action_status": True}
+    except Exception, e:
+      raise e
