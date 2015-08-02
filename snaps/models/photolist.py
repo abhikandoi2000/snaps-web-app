@@ -6,11 +6,11 @@ class PhotoList:
   def __init__(self):
     self.photos_list = []
 
-  def load(self, offset, limit, cursor):
+  def load(self, offset, limit, state, cursor):
     sql = "SELECT id, fb_id, filename, caption, owner_id, state, created_at \
            FROM photos \
-           WHERE state = 'launched' LIMIT %d OFFSET %d" % \
-           (limit, offset)
+           WHERE state = '%s' LIMIT %d OFFSET %d" % \
+           (state, limit, offset)
 
     try:
       cursor.execute(sql)
