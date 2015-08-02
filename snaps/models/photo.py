@@ -44,6 +44,8 @@ class Photo:
     except Exception, e:
       db.rollback()
       raise e
+  def set_state(self, new_state):
+    self.data['state'] = new_state
 
   def load_from_tuple(self, data):
     self.data['id'] = data[0]
