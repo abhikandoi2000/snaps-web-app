@@ -5,6 +5,7 @@ import MySQLdb
 
 from snaps.models.user import User
 from snaps.models.photo import Photo
+from snaps.models.photolist import PhotoList
 
 app = Flask(__name__)
 
@@ -16,9 +17,30 @@ cursor = db.cursor()
 
 @app.route('/', methods=['GET'])
 def homepage_display():
-  photo = Photo()
-  # photo.load_from_db(1, cursor)
-  photo.create((2, "2222222", "2222222.png", "But I was never meant to do this!", 5, "unreviewed", 2222222), db, cursor)
+  # photo = Photo()
+  # photo.load_from_db(3, cursor)
+  # photo.create(("3333333", "3333333.png", "Did this and that but never all at once!", 3, "unreviewed", 33333333), db, cursor)
+  # photo.set_state("launched")
+  # photo.save(cursor, db)
+  # photo.like({"user_id": 2, "created_at": 555555}, db, cursor)
+  # photo.unlike(2, db, cursor)
+  # photo.check_like(4, db, cursor)
+  # list = PhotoList()
+  # photos = list.load(0, 10, cursor)
+  # print photos
+
+  # user = User()
+  # user.create(("Nupur Bothra", "1", "Facebook",
+  #              json.dumps({
+  #                   "token": "aNJKJHsdakdaNAKsdhkJHdanashdLDSnlja=",
+  #                   "expires": "never"
+  #                 }),
+  #              "nupurbothra@gmail.com", 12121212, 12121212), db, cursor)
+
+  # user = User()
+  # user.load_from_db(6, cursor)
+  # print user.verify_creds("aNJKJHsdakdaNAKsdhkJHdanashdLDSnlja=", cursor, db)
+
   return render_template('landing_page.html')
 
 @app.route('/photos', methods=['GET'])
