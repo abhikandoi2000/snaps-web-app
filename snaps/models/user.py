@@ -29,18 +29,20 @@ class User:
       raise e
 
   def create(self, data, db, cursor):
-    sql = "INSERT INTO users(id, name, uid, provider, \
+    sql = "INSERT INTO users(name, uid, provider, \
            credentials, email, created_at, updated_at) \
-           VALUES ('%d', '%s', '%s', '%s', '%s', '%s', '%d', '%d')" % \
+           VALUES ('%s', '%s', '%s', '%s', '%s', '%d', '%d')" % \
            (data[0], data[1], data[2], data[3], data[4], \
-            data[5], data[6], data[7])
+            data[5], data[6])
 
     try:
       cursor.execute(sql)
 
       db.commit() # commit changes
 
-      self.load_from_tuple(data)
+      id = cursor.lastrowid
+
+      self.load_from_tuple((id,) + data)
     except Exception, e:
       db.rollback()
       raise e
