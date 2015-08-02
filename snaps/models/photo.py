@@ -118,3 +118,6 @@ class Photo:
     self.data['owner_id'] = data[4]
     self.data['state'] = data[5]
     self.data['created_at'] = data[6]
+
+  def get_dict(self):
+    return self.data
