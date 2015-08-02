@@ -22,6 +22,6 @@ class PhotoList:
 
         self.photos_list.append(photo)
 
-        return self.photos_list
+      return self.photos_list
     except Exception, e:
       raise e
