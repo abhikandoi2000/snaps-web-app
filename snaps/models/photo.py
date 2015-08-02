@@ -101,7 +101,7 @@ class Photo:
     try:
       cursor.execute(sql)
       data = cursor.fetchone()
-      if data = None:
+      if not data:
         return False
 
     except Exception, e:
