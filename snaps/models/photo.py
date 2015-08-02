@@ -44,8 +44,26 @@ class Photo:
     except Exception, e:
       db.rollback()
       raise e
+
   def set_state(self, new_state):
     self.data['state'] = new_state
+
+  def save(self, cursor, db):
+
+    sql = "UPDATE photos SET fb_id = '%s', filename = '%s', caption = '%s', \
+           owner_id = '%d', state = '%s', created_at = '%d' \
+           WHERE id = '%d'" % \
+           (self.data['fb_id'], self.data['filename'], self.data['caption'], \
+            self.data['owner_id'], self.data['state'], self.data['created_at'], \
+            self.data['id'])
+
+    try:
+      cursor.execute(sql)
+
+      db.commit() # commit changes
+    except Exception, e:
+      db.rollback()
+      raise e
 
   def load_from_tuple(self, data):
     self.data['id'] = data[0]
