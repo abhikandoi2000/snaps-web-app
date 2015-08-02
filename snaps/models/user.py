@@ -1,4 +1,5 @@
 import MySQLdb
+import json
 
 class User:
   def __init__(self):
@@ -46,6 +47,27 @@ class User:
     except Exception, e:
       db.rollback()
       raise e
+
+  def verify_creds(self, access_token, cursor, db):
+    sql = "SELECT credentials \
+           FROM users \
+           WHERE id = %d" % self.data['id']
+
+    try:
+      cursor.execute(sql)
+      data = cursor.fetchone()
+
+      credentials = json.loads(data[0])
+      token = credentials["token"]
+
+      if token == access_token:
+        return True
+
+      print credentials
+    except Exception, e:
+      raise e
+
+    return False
 
   def load_from_tuple(self, data):
     self.data['id'] = data[0]
