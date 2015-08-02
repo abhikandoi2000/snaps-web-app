@@ -1,6 +1,7 @@
 import time
 
 from ..models.photo import Photo
+from ..models.photolist import PhotoList
 from ..models.user import User
 
 class PhotoService:
@@ -43,6 +44,14 @@ class PhotoService:
         return {"action_performed": "liked", "action_status": True}
     except Exception, e:
       raise e
+
+  def fetch_list(self, cursor, offset, limit = 10, state = "launched"):
+    photolist = PhotoList()
+    photos = photolist.load(offset, limit, state, cursor)
+
+    photos = [photo.get_dict() for photo in photos]
+
+    return photos
 
   def insert_into_db(self, data, db, cursor):
     photo = Photo()
