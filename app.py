@@ -8,6 +8,7 @@ from snaps.models.user import User
 from snaps.models.photo import Photo
 from snaps.models.photolist import PhotoList
 from snaps.services.photoservice import PhotoService
+from snaps.services.userservice import UserService
 
 ALLOWED_EXTENSIONS = ['jpg', 'png', 'jpeg']
 
@@ -25,7 +26,9 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET'])
 def homepage_display():
-  photo_service = PhotoService()
+  # user_service = UserService()
+  # user_service.create("Adam Levine", "777777777", "i@adamlevin.com", {"access_token": "jlkSLAJD0aisdAS09da=", "expires": "143345446"}, db, cursor)
+  # photo_service = PhotoService()
   # photo_service.insert_into_db({"fb_id": "66666666", "filename": "66666666.jpg", ""}, db, cursor)
   # photo_service.change_state(2, 'launched', db, cursor)
   # photo_service.toggle_like(2, 6, "aNJKJHsdakdaNAKsdhkJHdanashdLDSnlja=", db, cursor)
