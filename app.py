@@ -12,6 +12,7 @@ from snaps.models.photolist import PhotoList
 from snaps.services.photoservice import PhotoService
 from snaps.services.userservice import UserService
 from snaps.utilities.imageutility import ImageUtility
+from snaps.utilities.fileutility import FileUtility
 
 ALLOWED_EXTENSIONS = ['jpg', 'png', 'jpeg']
 
@@ -29,6 +30,9 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET'])
 def homepage_display():
+  # file_utility = FileUtility()
+  # file_utility.download("http://sdslabs.co/img/top_portion.png", path.join(getcwd(), "static/original/portfolio.png"))
+
   # image_utility = ImageUtility()
   # photo = Image.open(path.join(getcwd(), "static/original/cousin.jpg"))
   # cropped_photo = image_utility.crop(photo)
