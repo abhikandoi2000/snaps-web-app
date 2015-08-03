@@ -31,6 +31,6 @@ class ImageUtility:
     return photo
 
     def resize(self, photo, new_size):
-      photo.thumbnail(new_size)
+      photo.thumbnail(new_size, Image.ANTIALIAS)
 
       return photo
