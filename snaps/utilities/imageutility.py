@@ -29,3 +29,8 @@ class ImageUtility:
       photo = photo.crop((left, upper, right, lower))
 
     return photo
+
+    def resize(self, photo, new_size):
+      photo.thumbnail(new_size)
+
+      return photo
