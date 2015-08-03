@@ -2,13 +2,16 @@ import json
 
 from flask import Flask, render_template, url_for, request, make_response, Response
 from werkzeug import secure_filename
+from os import getcwd, path
 import MySQLdb
+from PIL import Image
 
 from snaps.models.user import User
 from snaps.models.photo import Photo
 from snaps.models.photolist import PhotoList
 from snaps.services.photoservice import PhotoService
 from snaps.services.userservice import UserService
+from snaps.utilities.imageutility import ImageUtility
 
 ALLOWED_EXTENSIONS = ['jpg', 'png', 'jpeg']
 
@@ -26,6 +29,11 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET'])
 def homepage_display():
+  # image_utility = ImageUtility()
+  # photo = Image.open(path.join(getcwd(), "static/original/cousin.jpg"))
+  # cropped_photo = image_utility.crop(photo)
+  # cropped_photo.save(path.join(getcwd(), "static/cropped/cousin.jpg"), optimize=True, quality=60)
+
   # user_service = UserService()
   # user_service.create("Adam Levine", "777777777", "i@adamlevin.com", {"access_token": "jlkSLAJD0aisdAS09da=", "expires": "143345446"}, db, cursor)
   # photo_service = PhotoService()
