@@ -10,6 +10,7 @@ from snaps.models.user import User
 from snaps.models.photo import Photo
 from snaps.models.photolist import PhotoList
 from snaps.services.photoservice import PhotoService
+from snaps.services.facebookservice import FacebookService
 from snaps.services.userservice import UserService
 from snaps.utilities.imageutility import ImageUtility
 from snaps.utilities.fileutility import FileUtility
@@ -30,6 +31,10 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET'])
 def homepage_display():
+  # sample_token = ""
+  # fb_service = FacebookService(sample_token)
+  # fb_service.fetch_all_photos()
+
   # file_utility = FileUtility()
   # file_utility.download("http://sdslabs.co/img/top_portion.png", path.join(getcwd(), "static/original/portfolio.png"))
 
