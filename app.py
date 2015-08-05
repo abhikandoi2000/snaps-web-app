@@ -145,13 +145,15 @@ def user_create():
     cropped = image_utility.crop(original)
     cropped.save(copy_filepath)
 
-    print photo
     photo_service.insert_into_db({
         'fb_id': photo['id'],
         'filename': photo['id'] + "." + extension,
         'caption': photo['caption'],
         'owner_id': user_id
       }, db, cursor)
+
+  return Response(json.dumps({"action_status": True}),
+      mimetype='application/json')
 
 
 if __name__ == '__main__':
