@@ -157,9 +157,21 @@ def photolist_fetch():
 
   return Response(json.dumps(photos), mimetype='application/json')
 
+@app.route('/photos/mark/', methods=['POST'])
+def photo_mark():
+  photo_id = int(request.form['photo_id'])
+  mark_as = request.form['mark_as']
+
+  photo_service = PhotoService()
+  photo_service.change_state(photo_id, mark_as, db, cursor)
+
+  return Response(json.dumps({"action_status": True}),
+      mimetype='application/json')
+
 
 if __name__ == '__main__':
   app.run(debug=True)
 
   # disconnect from server
   db.close()
+
