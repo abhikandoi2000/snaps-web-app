@@ -31,12 +31,12 @@ class Photo:
   def create(self, data, db, cursor):
     sql = "INSERT INTO photos(fb_id, filename, caption, \
            owner_id, state, created_at) \
-           VALUES ('%s', '%s', '%s', '%d', '%s', '%d')" % \
-           (data[0], data[1], data[2], data[3], data[4], \
-            data[5])
+           VALUES (%s, %s, %s, %s, %s, %s)"
+
+    print data
 
     try:
-      cursor.execute(sql)
+      cursor.execute(sql, (data[0], data[1], data[2], data[3], data[4], data[5]))
 
       db.commit() # commit changes
 
