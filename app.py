@@ -168,6 +168,17 @@ def photo_mark():
   return Response(json.dumps({"action_status": True}),
       mimetype='application/json')
 
+@app.route('/photos/toggle_like/', methods=['POST'])
+def photo_like_toggle():
+  photo_id = int(request.form['photo_id'])
+  access_token = request.form['access_token']
+  user_id = int(request.form['user_id'])
+
+  photo_service = PhotoService()
+  resp_dict = photo_service.toggle_like(photo_id, user_id, access_token, db, cursor)
+
+  return Response(json.dumps(resp_dict),
+      mimetype='application/json')
 
 if __name__ == '__main__':
   app.run(debug=True)
