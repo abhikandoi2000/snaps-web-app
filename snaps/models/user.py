@@ -23,9 +23,9 @@ class User:
       cursor.execute(sql)
       data = cursor.fetchone()
 
-      self.load_from_tuple(data)
+      print data
 
-      return "Hello"
+      self.load_from_tuple(data)
     except Exception, e:
       raise e
 
@@ -44,6 +44,8 @@ class User:
       id = cursor.lastrowid
 
       self.load_from_tuple((id,) + data)
+
+      return self.data['id']
     except Exception, e:
       db.rollback()
       raise e
