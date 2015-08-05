@@ -80,3 +80,6 @@ class User:
     self.data['email'] = data[5]
     self.data['created_at'] = data[6]
     self.data['updated_at'] = data[7]
+
+  def get_dict(self):
+    return self.data
