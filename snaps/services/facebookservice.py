@@ -3,16 +3,24 @@ import facebook
 class FacebookService:
   def __init__(self, access_token):
     self.graph = facebook.GraphAPI(access_token)
+    self.details = {
+      "name": None,
+      "id": None
+    }
 
-  def fetch_user_id(self):
-    me = self.graph.get_object(id='me')
+  def fetch_details(self):
+    if None in self.details.values():
+      me = self.graph.get_object(id='me')
 
-    return me['id']
+      self.details['name'] = me['name']
+      self.details['id'] = me['id']
+
+    return self.details
 
   def fetch_all_photos(self):
     photos_list = []
 
-    user_id = self.fetch_user_id()
+    user_id = self.fetch_details()['id']
 
     photos = self.graph.get_connections(id='me', connection_name='photos', limit=500)
 
