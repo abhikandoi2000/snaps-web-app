@@ -110,6 +110,25 @@ class Photo:
 
     return True
 
+  def like_count(self, db, cursor):
+    sql = "SELECT count(*) FROM likes \
+           WHERE photo_id = '%d'" % \
+           (self.data['id'])
+
+    try:
+      cursor.execute(sql)
+      data = cursor.fetchone()
+
+      print data
+
+      # TODO: return true value, 2 is hardcoded
+      return 2
+    except Exception, e:
+      db.rollback()
+      raise e
+
+    return True
+
   def load_from_tuple(self, data):
     self.data['id'] = data[0]
     self.data['fb_id'] = data[1]
