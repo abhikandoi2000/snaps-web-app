@@ -5,6 +5,7 @@ from werkzeug import secure_filename
 from os import getcwd, path
 import MySQLdb
 from PIL import Image
+import shutil
 
 from snaps.models.user import User
 from snaps.models.photo import Photo
@@ -33,7 +34,7 @@ def allowed_file(filename):
 def homepage_display():
   # sample_token = ""
   # fb_service = FacebookService(sample_token)
-  # fb_service.fetch_all_photos()
+  # print fb_service.fetch_details()
 
   # file_utility = FileUtility()
   # file_utility.download("http://sdslabs.co/img/top_portion.png", path.join(getcwd(), "static/original/portfolio.png"))
@@ -104,6 +105,54 @@ def photo_upload():
         ), mimetype='application/json')
     except Exception, e:
       raise e
+
+@app.route('/users/new/', methods=['POST'])
+def user_create():
+  access_token = request.form['access_token']
+
+  # TODO: check for an existing user here
+
+  fb_service = FacebookService(access_token)
+  user_details = fb_service.fetch_details()
+  name = user_details['name']
+  uid = user_details['id']
+  email = "need_to@fixthis.com" # TODO: fetch this using the fb service
+  photos = fb_service.fetch_all_photos()
+
+  # save the user to db
+  user_service = UserService()
+  # TODO: fix the field expires
+  user_id = user_service.create(name, uid, email, {"token": access_token, "expires": "never"}, db, cursor)
+  user_id = int(user_id)
+
+
+  file_service = FileUtility()
+  photo_service = PhotoService()
+  image_utility = ImageUtility()
+
+  for photo in photos:
+    extension = "jpg" # TODO: extract proper file extension here
+
+    filepath = path.join(getcwd(), "static/original/" + photo['id'] + "." + extension)
+    file_service.download(photo['src'],
+      filepath
+      )
+
+    # copy,crop and save photo
+    copy_filepath = path.join(getcwd(), "static/cropped/" + photo['id'] + "." + extension)
+    original = Image.open(filepath)
+
+    cropped = image_utility.crop(original)
+    cropped.save(copy_filepath)
+
+    print photo
+    photo_service.insert_into_db({
+        'fb_id': photo['id'],
+        'filename': photo['id'] + "." + extension,
+        'caption': photo['caption'],
+        'owner_id': user_id
+      }, db, cursor)
+
 
 if __name__ == '__main__':
   app.run(debug=True)
