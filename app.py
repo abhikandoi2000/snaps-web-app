@@ -78,13 +78,6 @@ def homepage_display():
 
   return render_template('landing_page.html')
 
-@app.route('/photos/', methods=['GET'])
-def photo_list_fetch():
-  offset = request.args.get('offset', '')
-
-  return Response(json.dumps({"data": [{"photo_id":"5"}, {"photo_id": "6"}]}),
-                  mimetype='application/json')
-
 @app.route('/photos/new/', methods=['POST'])
 def photo_upload():
   user_id = int(request.form['user_id'])
@@ -154,6 +147,15 @@ def user_create():
 
   return Response(json.dumps({"action_status": True}),
       mimetype='application/json')
+
+@app.route('/photos/', methods=['GET'])
+def photolist_fetch():
+  offset = int(request.args.get('offset', 0))
+
+  photo_service = PhotoService()
+  photos = photo_service.fetch_list(db, cursor, offset)
+
+  return Response(json.dumps(photos), mimetype='application/json')
 
 
 if __name__ == '__main__':
