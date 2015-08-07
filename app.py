@@ -155,7 +155,7 @@ def photolist_fetch():
   photo_service = PhotoService()
   photos = photo_service.fetch_list(db, cursor, offset)
 
-  return Response(json.dumps(photos), mimetype='application/json')
+  return Response(json.dumps({"data": photos}), mimetype='application/json')
 
 @app.route('/photos/mark/', methods=['POST'])
 def photo_mark():
