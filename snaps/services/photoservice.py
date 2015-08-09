@@ -15,6 +15,12 @@ class PhotoService:
     try:
       photo.load_from_db(photo_id, cursor)
       photo.set_state(new_state)
+
+      if new_state == "launched":
+        photo.set_approved_at(int(time.time()))
+      else:
+        photo.set_approved_at(0)
+
       photo.save(cursor, db)
 
       return True
@@ -116,7 +122,8 @@ class PhotoService:
           data['caption'],
           data['owner_id'],
           'unreviewed',
-          int(time.time())
+          int(time.time()),
+          0
         )
         , db, cursor)
 
