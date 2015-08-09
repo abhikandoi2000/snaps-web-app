@@ -1,11 +1,12 @@
 import json
+import shutil
+from os import getcwd, path
+import time
 
 from flask import Flask, render_template, url_for, request, make_response, Response
 from werkzeug import secure_filename
-from os import getcwd, path
 import MySQLdb
 from PIL import Image
-import shutil
 
 from snaps.models.user import User
 from snaps.models.photo import Photo
@@ -150,10 +151,15 @@ def user_create():
 
 @app.route('/photos/', methods=['GET'])
 def photolist_fetch():
-  offset = int(request.args.get('offset', 0))
+  intime = 'after'
+  timestamp = int(request.args.get('after', 0))
+
+  if timestamp == 0:
+    intime = 'before'
+    timestamp = int(request.args.get('before', int(time.time())))
 
   photo_service = PhotoService()
-  photos = photo_service.fetch_list(db, cursor, offset)
+  photos = photo_service.fetch_by_time(db, cursor, intime, timestamp)
 
   return Response(json.dumps({"data": photos}), mimetype='application/json')
 
