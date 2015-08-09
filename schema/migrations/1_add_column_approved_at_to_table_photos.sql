@@ -1,0 +1,1 @@
+ALTER TABLE `photos`  ADD `approved_at` INT(10) NOT NULL;
