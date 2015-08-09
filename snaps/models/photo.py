@@ -9,11 +9,13 @@ class Photo:
       "caption": None,
       "owner_id": None,
       "state": None,
-      "created_at": None
+      "created_at": None,
+      "approved_at": None
     }
 
   def load_from_db(self, photo_id, cursor):
-    sql = "SELECT id, fb_id, filename, caption, owner_id, state, created_at \
+    sql = "SELECT id, fb_id, filename, caption, owner_id, state, \
+           created_at, approved_at \
            FROM photos \
            WHERE id = %d" % photo_id
 
@@ -30,13 +32,13 @@ class Photo:
 
   def create(self, data, db, cursor):
     sql = "INSERT INTO photos(fb_id, filename, caption, \
-           owner_id, state, created_at) \
-           VALUES (%s, %s, %s, %s, %s, %s)"
+           owner_id, state, created_at, approved_at) \
+           VALUES (%s, %s, %s, %s, %s, %s, %s)"
 
     print data
 
     try:
-      cursor.execute(sql, (data[0], data[1], data[2], data[3], data[4], data[5]))
+      cursor.execute(sql, (data[0], data[1], data[2], data[3], data[4], data[5], data[6]))
 
       db.commit() # commit changes
 
@@ -50,14 +52,17 @@ class Photo:
   def set_state(self, new_state):
     self.data['state'] = new_state
 
+  def set_approved_at(self, timestamp):
+    self.data['approved_at'] = timestamp
+
   def save(self, cursor, db):
 
     sql = "UPDATE photos SET fb_id = '%s', filename = '%s', caption = '%s', \
-           owner_id = '%d', state = '%s', created_at = '%d' \
+           owner_id = '%d', state = '%s', created_at = '%d', approved_at = '%d' \
            WHERE id = '%d'" % \
            (self.data['fb_id'], self.data['filename'], self.data['caption'], \
             self.data['owner_id'], self.data['state'], self.data['created_at'], \
-            self.data['id'])
+            self.data['approved_at'], self.data['id'])
 
     try:
       cursor.execute(sql)
@@ -137,6 +142,7 @@ class Photo:
     self.data['owner_id'] = data[4]
     self.data['state'] = data[5]
     self.data['created_at'] = data[6]
+    self.data['approved_at'] = data[7]
 
   def get_dict(self):
     return self.data
