@@ -124,15 +124,12 @@ class Photo:
       cursor.execute(sql)
       data = cursor.fetchone()
 
-      print data
+      print "like_count: fetched data is", data
 
-      # TODO: return true value, 2 is hardcoded
-      return 2
+      return data[0]
     except Exception, e:
       db.rollback()
       raise e
-
-    return True
 
   def load_from_tuple(self, data):
     self.data['id'] = data[0]
