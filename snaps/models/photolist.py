@@ -67,3 +67,47 @@ class PhotoList:
       return self.photos_list
     except Exception, e:
       raise e
+
+  def load_by_likes(self, photo_id, db, cursor):
+    # select photos where like < likes_for(photo_id)
+    # union
+    # select photos where like = likes_for(photo_id) and timestamp < timestamp_for(photo_id)
+    curr_photo = Photo()
+    curr_photo.load_from_db(photo_id, cursor)
+    curr_photo_likes = curr_photo.like_count(db, cursor)
+    curr_photo_approve_timestamp = curr_photo.get_dict()['approved_at']
+
+    sql = "SELECT photos.id, photos.fb_id, photos.filename, photos.caption, \
+           photos.owner_id, photos.state, photos.created_at, photos.approved_at, \
+           likes_count.count \
+           FROM photos \
+           LEFT JOIN (SELECT photo_id, count(*) AS count FROM likes GROUP BY photo_id) AS likes_count \
+           ON photos.id = likes_count.photo_id \
+           WHERE likes_count.count = %s \
+           AND photos.approved_at < %s \
+           \
+           UNION \
+           \
+           SELECT photos.id, photos.fb_id, photos.filename, photos.caption, \
+           photos.owner_id, photos.state, photos.created_at, photos.approved_at, \
+           likes_count.count \
+           FROM photos \
+           LEFT JOIN (SELECT photo_id, count(*) AS count FROM likes GROUP BY photo_id) AS likes_count \
+           ON photos.id = likes_count.photo_id \
+           WHERE likes_count.count < %s"
+
+    try:
+      cursor.execute(sql, (curr_photo_likes, curr_photo_approve_timestamp, curr_photo_likes))
+      data = cursor.fetchall()
+
+      print data
+
+      for row in data:
+        photo = Photo()
+        photo.load_from_tuple(row)
+
+        self.photos_list.append(photo)
+
+      return self.photos_list
+    except Exception, e:
+      raise e
