@@ -137,6 +137,32 @@ class PhotoService:
 
     return photos
 
+  def fetch_all_photos_by_likes(self, db, cursor):
+    photolist = PhotoList()
+
+    photos = photolist.load_all_photos_by_likes(db, cursor)
+
+    photos = [photo.get_dict() for photo in photos]
+
+    for photo in photos:
+      photo_obj = Photo()
+      photo_obj.load_from_db(photo['id'], cursor)
+
+      user = User()
+      user.load_from_db(photo['owner_id'], cursor)
+      user_data = user.get_dict()
+
+      # TODO: include profile pic
+      photo['owner'] = {"id": photo['owner_id'], "name": user_data['name'], "profile_pic": ""}
+      photo['likes_count'] = photo_obj.like_count(db, cursor)
+      photo['url'] = "http://localhost:5000/cropped/%s" % photo['filename']
+      del photo['owner_id']
+      del photo['state']
+      del photo['fb_id']
+      del photo['filename']
+
+    return photos
+
   def insert_into_db(self, data, db, cursor):
     photo = Photo()
 
