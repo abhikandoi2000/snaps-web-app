@@ -151,15 +151,26 @@ def user_create():
 
 @app.route('/photos/', methods=['GET'])
 def photolist_fetch():
-  intime = 'after'
-  timestamp = int(request.args.get('after', 0))
-
-  if timestamp == 0:
-    intime = 'before'
-    timestamp = int(request.args.get('before', int(time.time())))
+  sort_by = request.args.get('sort_by', 'time')
 
   photo_service = PhotoService()
-  photos = photo_service.fetch_by_time(db, cursor, intime, timestamp)
+  if sort_by == 'time':
+    intime = 'after'
+    timestamp = int(request.args.get('after', 0))
+
+    if timestamp == 0:
+      intime = 'before'
+      timestamp = int(request.args.get('before', int(time.time())))
+
+    photos = photo_service.fetch_by_time(db, cursor, intime, timestamp)
+  else:
+    # TODO: set the default properly
+    photo_id = request.args.get('photo_id', None)
+    if photo_id:
+      photo_id = int(photo_id)
+      photos = photo_service.fetch_by_likes(db, cursor, photo_id)
+    else:
+      pass
 
   return Response(json.dumps({"data": photos}), mimetype='application/json')
 
