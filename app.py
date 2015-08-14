@@ -170,7 +170,7 @@ def photolist_fetch():
       photo_id = int(photo_id)
       photos = photo_service.fetch_by_likes(db, cursor, photo_id)
     else:
-      pass
+      photos = photo_service.fetch_all_photos_by_likes(db, cursor)
 
   return Response(json.dumps({"data": photos}), mimetype='application/json')
 
