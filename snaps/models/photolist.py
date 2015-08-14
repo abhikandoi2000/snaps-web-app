@@ -100,7 +100,29 @@ class PhotoList:
       cursor.execute(sql, (curr_photo_likes, curr_photo_approve_timestamp, curr_photo_likes))
       data = cursor.fetchall()
 
-      print data
+      for row in data:
+        photo = Photo()
+        photo.load_from_tuple(row)
+
+        self.photos_list.append(photo)
+
+      return self.photos_list
+    except Exception, e:
+      raise e
+
+  def load_all_photos_by_likes(self, db, cursor, limit = 10):
+    sql = "SELECT photos.id, photos.fb_id, photos.filename, photos.caption, \
+           photos.owner_id, photos.state, photos.created_at, photos.approved_at, \
+           likes_count.count \
+           FROM photos \
+           LEFT JOIN (SELECT photo_id, count(*) AS count FROM likes GROUP BY photo_id) AS likes_count \
+           ON photos.id = likes_count.photo_id \
+           ORDER BY likes_count.count DESC, \
+           photos.approved_at DESC LIMIT %d" % limit
+
+    try:
+      cursor.execute(sql)
+      data = cursor.fetchall()
 
       for row in data:
         photo = Photo()
