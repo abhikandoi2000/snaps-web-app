@@ -33,49 +33,6 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET'])
 def homepage_display():
-  # sample_token = ""
-  # fb_service = FacebookService(sample_token)
-  # print fb_service.fetch_details()
-
-  # file_utility = FileUtility()
-  # file_utility.download("http://sdslabs.co/img/top_portion.png", path.join(getcwd(), "static/original/portfolio.png"))
-
-  # image_utility = ImageUtility()
-  # photo = Image.open(path.join(getcwd(), "static/original/cousin.jpg"))
-  # cropped_photo = image_utility.crop(photo)
-  # cropped_photo.save(path.join(getcwd(), "static/cropped/cousin.jpg"), optimize=True, quality=60)
-
-  # user_service = UserService()
-  # user_service.create("Adam Levine", "777777777", "i@adamlevin.com", {"access_token": "jlkSLAJD0aisdAS09da=", "expires": "143345446"}, db, cursor)
-  # photo_service = PhotoService()
-  # photo_service.insert_into_db({"fb_id": "66666666", "filename": "66666666.jpg", ""}, db, cursor)
-  # photo_service.change_state(2, 'launched', db, cursor)
-  # photo_service.toggle_like(2, 6, "aNJKJHsdakdaNAKsdhkJHdanashdLDSnlja=", db, cursor)
-  # print photo_service.fetch_list(cursor, 0)
-
-  # photo = Photo()
-  # photo.load_from_db(3, cursor)
-  # photo.create(("3333333", "3333333.png", "Did this and that but never all at once!", 3, "unreviewed", 33333333), db, cursor)
-  # photo.set_state("launched")
-  # photo.save(cursor, db)
-  # photo.like({"user_id": 2, "created_at": 555555}, db, cursor)
-  # photo.unlike(2, db, cursor)
-  # photo.check_like(4, db, cursor)
-  # list = PhotoList()
-  # photos = list.load(0, 10, cursor)
-  # print photos
-
-  # user = User()
-  # user.create(("Nupur Bothra", "1", "Facebook",
-  #              json.dumps({
-  #                   "token": "aNJKJHsdakdaNAKsdhkJHdanashdLDSnlja=",
-  #                   "expires": "never"
-  #                 }),
-  #              "nupurbothra@gmail.com", 12121212, 12121212), db, cursor)
-
-  # user = User()
-  # user.load_from_db(6, cursor)
-  # print user.verify_creds("aNJKJHsdakdaNAKsdhkJHdanashdLDSnlja=", cursor, db)
 
   return render_template('landing_page.html')
 
