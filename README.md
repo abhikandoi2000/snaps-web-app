@@ -45,14 +45,26 @@ Upload a new photo
 
 ####Sample Response
 ```json
-{"data": [{
-  "url": "http://localhost:5000/static/imgs/camping.png",
-  "caption": "Camping trip to Antargange",
-  "likes_count": 5,
-  "owner": {
-    "id": 2,
-    "name": "Abhishek Kandoi",
-    "profile_pic": "http://localhost:5000/static/imgs/kandoi.png"
+{"data": [
+  {
+    "url": "http://localhost:5000/static/imgs/camping.png",
+    "caption": "Camping trip to Antargange",
+    "likes_count": 5,
+    "owner": {
+      "id": 2,
+      "name": "Abhishek Kandoi",
+      "profile_pic": "http://localhost:5000/static/imgs/kandoi.png"
+    }
+  },
+  {
+    "url": "http://localhost:5000/static/imgs/trekking.png",
+    "caption": "spelunking and trekking at Antargange",
+    "likes_count": 12,
+    "owner": {
+      "id": 2,
+      "name": "Abhishek Kandoi",
+      "profile_pic": "http://localhost:5000/static/imgs/kandoi.png"
+    }
   }
-}]}
+]}
 ```
