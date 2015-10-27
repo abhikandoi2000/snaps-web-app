@@ -37,6 +37,8 @@ Upload a new photo
 
 ###GET /photos
 
+Fetch list of photos based on **time** or **likes**
+
 ####Parameters
  * `sort_by` - possible values are `time` and `like`
  * `after` - load photos after this timestamp (only when `sort_by` is set to `time`)
@@ -67,4 +69,43 @@ Upload a new photo
     }
   }
 ]}
+```
+
+###POST /users/new
+
+Create a new user
+
+####Parameters
+ * `access_token` - facebook access token
+
+####Sample Response
+```json
+{"action_status": true}
+```
+
+###POST /photos/mark
+
+Mark a photo as **reviewed** or **disallow** (_admin only for now_)
+
+####Parameters
+ * `photo_id` - photo identifier
+ * `mark_as` - new state of photo (TODO: should be chosen from a discrete set in future)
+
+####Sample Response
+```json
+{"action_status": true}
+```
+
+###POST /photos/toggle_like
+
+Toggle the like state of a photo
+
+####Parameters
+ * `photo_id` - photo identifier
+ * `access_token` - facebook access token
+ * `user_id` - user identifier
+
+####Sample Response
+```json
+{"action_performed": "photo.unlike", "action_status": true}
 ```
